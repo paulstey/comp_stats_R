@@ -4,13 +4,8 @@
 # Author: Paul Stey
 ############
 
-
 ## Read in Mardia, Kent, and Bibby (1979) "Open-Closed Book" data
 dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
-
-
-
-
 
 
 #########
@@ -29,7 +24,7 @@ f_2dot <- matrix(NA, nrow = 6, ncol = 6)
 ###
 # function to fill f_dot vector (first derivatives)
 ###
-dx <- function(X, sigma, sigma_dot){
+dx <- function(X, sigma, sigma_dot) {
     
     J <- 2*nrow(sigma)
     S <- cov(X)
@@ -38,8 +33,7 @@ dx <- function(X, sigma, sigma_dot){
     sigma_inv <- solve(sigma)
 
     ## Fill f_dot with this loop
-    for(j in 1:J){
-        
+    for (j in 1:J) {
         f_dot[j] <- -sum(diag(sigma_inv %*% (S - sigma) %*% sigma_inv %*% sigma_dot[, , j]))
     }
     return(f_dot)
@@ -51,7 +45,7 @@ dx <- function(X, sigma, sigma_dot){
 ###
 # function to fill f_2dot matrix (second derivates)
 ###
-d2x <- function(X, sigma, sigma_dot){
+d2x <- function(X, sigma, sigma_dot) {
     
     J <- 2*nrow(sigma)
     K <- J
@@ -60,10 +54,8 @@ d2x <- function(X, sigma, sigma_dot){
     sigma_inv <- solve(sigma)
 
     ## Fill f_2dot with this loop
-    for(j in 1:J){
-        
-        for(k in 1:K){
-            
+    for (j in 1:J) {
+        for (k in 1:K) {
             f_2dot[j, k] <- sum(diag(sigma_inv %*% sigma_dot[, , j] %*% sigma_inv %*% sigma_dot[, , k]))
         }
     }
@@ -80,7 +72,7 @@ d2x <- function(X, sigma, sigma_dot){
 ###
 # Function to return delta theta, which is our step size
 ###
-del_theta <- function(X, start){
+del_theta <- function(X, start) {
     
     theta <- start
     J <- length(theta)
@@ -98,12 +90,12 @@ del_theta <- function(X, start){
 
 
     ## loop to fill sigma_dot for j = 1, 2, 3
-    for(i in 1:3){
+    for (i in 1:3) {
         sigma_dot[, , i] <- e[, , i] %*% t(lam) + lam %*% t(e[, , i])
     }
 
     ## Now, loop to fill sigma_dot for j = 4, 5, 6
-    for(j in 4:6){
+    for (j in 4:6) {
         sigma_dot[, , j] <- e[, , j-3] %*% t(e[, , j-3])
     }
 
@@ -126,14 +118,14 @@ del_theta <- function(X, start){
 # Function that will iterate until sufficiently small step size
 ###
 
-scoring <- function(X, start, cutoff, maxiter){
+scoring <- function(X, start, cutoff, maxiter) {
     
     theta <- start
     count <- 1
     maxstep <- 1e5
 
     ## while loop to minimize step
-    while(maxstep > cutoff & count < maxiter){
+    while (maxstep > cutoff & count < maxiter) {
         
         maxstep <- max(abs(del_theta(X, theta)))
         theta <- theta - del_theta(X, theta)
@@ -183,15 +175,6 @@ summary(fm1)
 
 
 
-
-
-
-
-
-
-
-
-
 ##########
 # Two-factor model
 # Using all five variables
@@ -236,7 +219,7 @@ phi_dot <- matrix(c(0, 1, 1, 0), nrow = 2, ncol = 2)
 ###
 # function to fill f_dot vector
 ###
-dx <- function(X, sigma, sigma_dot){
+dx <- function(X, sigma, sigma_dot) {
     
     J <- (2 * nrow(sigma))+ 1
     S <- cov(X)
@@ -245,7 +228,7 @@ dx <- function(X, sigma, sigma_dot){
     sigma_inv <- solve(sigma)
 
     ## Fill f_dot with this loop
-    for(j in 1:J){
+    for (j in 1:J) {
         f_dot[j] <- -sum(diag(sigma_inv %*% (S - sigma) %*% sigma_inv %*% sigma_dot[, , j]))
     }
     return(f_dot)
@@ -267,9 +250,8 @@ d2x <- function(X, sigma, sigma_dot){
     sigma_inv <- solve(sigma)
 
     ## Fill f_2dot with this loop
-    for(j in 1:J){
-        
-        for(k in 1:K){
+    for (j in 1:J) {
+        for (k in 1:K) {
             f_2dot[j, k] <- sum(diag(sigma_inv %*% sigma_dot[, , j] %*% sigma_inv %*% sigma_dot[, , k]))
         }
     }
@@ -291,26 +273,20 @@ del_theta <- function(X, start){
     J <- length(theta)
     K <- J
     
-    
     ## define lam
     lam <- matrix(c(theta[1], theta[2], 0, 0, 0, 0, 0, theta[3], theta[4], theta[5]), nrow = 5, ncol = 2)
-
-
+    
     ## define psi from theta values
     psi <- matrix(c(theta[7], 0, 0, 0, 0, 0, theta[8], 0, 0, 0, 0, 0, theta[9], 0, 0, 0, 0, 0, theta[10], 0, 0, 0, 0, 0, theta[11]), nrow = 5, ncol = 5)
 
     ## define Phi from theta values
     Phi <- matrix(c(1, theta[6], theta[6], 1), nrow = 2, ncol = 2)
 
-
     ## Compute model-implied covariance matrix
     sigma <- lam %*% Phi %*% t(lam) + psi
     
-
-
     ## loop to fill sigma_dot for j = 1, 2, 3, 4, 5
-    for(j in 1:5){
-        
+    for (j in 1:5) {
         sigma_dot[, , j] <- lam_dot[, , j] %*% Phi %*% t(lam) + lam %*% Phi %*% t(lam_dot[, , j])
     }
 
@@ -320,16 +296,12 @@ del_theta <- function(X, start){
 
 
     ## Loop to fill sigma_dot for j = 7, 8, 9, 10, 11
-    for(j in 7:11){
-        
+    for (j in 7:11) {
         sigma_dot[, , j] <- e[, , j-6] %*% t(e[, , j-6])
     }
 
-    
     f_dot <- dx(X, sigma, sigma_dot)                        # first deriv. of f
-
     f_2dot <- d2x(X, sigma, sigma_dot)                      # 2nd deriv. of f
-
     delta_theta <- solve(f_2dot) %*% f_dot                  # compute step size
 
     return(delta_theta)
@@ -352,7 +324,7 @@ scoring <- function(X, start, cutoff, maxiter){
     maxstep <- 1e5
 
     ## while loop to minimize step
-    while(maxstep > cutoff & count < maxiter){
+    while (maxstep > cutoff & count < maxiter) {
         maxstep <- max(abs(del_theta(X, theta)))
         theta <- theta - del_theta(X, theta)
         
@@ -384,10 +356,6 @@ score_cfa <- scoring(X, start = theta0, cutoff = 1e-5, maxiter = 100)
 score_cfa <- round(score_cfa, digits = 2)
 
 print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', ', score_cfa[3], ', ', score_cfa[4], ', ', 'and ', score_cfa[5], '.  ', 'The unique variances are: ', score_cfa[7], ', ', score_cfa[8], ', ', score_cfa[9], ', ', score_cfa[10], ', ', 'and ', score_cfa[11],'.  ', 'The correlation between factors is ', score_cfa[6], '.'))
-
-
-
-
 
 
 
