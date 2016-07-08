@@ -40,8 +40,6 @@ dx <- function(X, sigma, sigma_dot) {
 }
 
 
-
-
 ###
 # function to fill f_2dot matrix (second derivates)
 ###
@@ -61,10 +59,6 @@ d2x <- function(X, sigma, sigma_dot) {
     }
     return(f_2dot)
 }
-
-
-
-
 
 
 
@@ -112,8 +106,6 @@ del_theta <- function(X, start) {
 }
 
 
-
-
 ###
 # Function that will iterate until sufficiently small step size
 ###
@@ -136,8 +128,6 @@ scoring <- function(X, start, cutoff, maxiter) {
     }
     return(theta)
 }
-
-
 
 
 ###
