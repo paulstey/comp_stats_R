@@ -1,8 +1,8 @@
-############
+####
 # Fisher scoring for CFA/SEM
 # November 9, 2013
 # Author: Paul Stey
-############
+####
 
 ## Read in Mardia, Kent, and Bibby (1979) "Open-Closed Book" data
 dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
@@ -25,14 +25,13 @@ f_2dot <- matrix(NA, nrow = 6, ncol = 6)
 # function to fill f_dot vector (first derivatives)
 ###
 dx <- function(X, sigma, sigma_dot) {
-    
     J <- 2*nrow(sigma)
     S <- cov(X)
 
-    ## Invert sigma outside loop
+    # Invert sigma outside loop
     sigma_inv <- solve(sigma)
 
-    ## Fill f_dot with this loop
+    # Fill f_dot with this loop
     for (j in 1:J) {
         f_dot[j] <- -sum(diag(sigma_inv %*% (S - sigma) %*% sigma_inv %*% sigma_dot[, , j]))
     }
@@ -48,10 +47,10 @@ d2x <- function(X, sigma, sigma_dot) {
     J <- 2*nrow(sigma)
     K <- J
 
-    ## Invert sigma outside loops
+    # Invert sigma outside loops
     sigma_inv <- solve(sigma)
 
-    ## Fill f_2dot with this loop
+    # Fill f_2dot with this loop
     for (j in 1:J) {
         for (k in 1:K) {
             f_2dot[j, k] <- sum(diag(sigma_inv %*% sigma_dot[, , j] %*% sigma_inv %*% sigma_dot[, , k]))
@@ -73,30 +72,30 @@ del_theta <- function(X, start) {
     K <- J
     lam <- theta[1:3]
     
-    ## initialize e as identity matrix
+    # initialize e as identity matrix
     e <- array(c(1, 0, 0, 0, 1, 0, 0, 0, 1), dim = c(3, 1, 3))
     
-    ## define psi from theta values
+    # define psi from theta values
     psi <- matrix(c(theta[4], 0, 0, 0, theta[5], 0, 0, 0, theta[6]), nrow = 3, ncol = 3)
 
     ## Compute model-implied covariance matrix
     sigma <- lam %*% t(lam) + psi
 
 
-    ## loop to fill sigma_dot for j = 1, 2, 3
+    # loop to fill sigma_dot for j = 1, 2, 3
     for (i in 1:3) {
         sigma_dot[, , i] <- e[, , i] %*% t(lam) + lam %*% t(e[, , i])
     }
 
-    ## Now, loop to fill sigma_dot for j = 4, 5, 6
+    # loop to fill sigma_dot for j = 4, 5, 6
     for (j in 4:6) {
         sigma_dot[, , j] <- e[, , j-3] %*% t(e[, , j-3])
     }
 
-    ## Apply function for first derivative of F
+    # Apply function for first derivative of F
     f_dot <- dx(X, sigma, sigma_dot)
 
-    ## Apply function for second derivative of F
+    # Apply function for second derivative of F
     f_2dot <- d2x(X, sigma, sigma_dot)
 
     ## compute step size 
@@ -116,7 +115,7 @@ scoring <- function(X, start, cutoff, maxiter) {
     count <- 1
     maxstep <- 1e5
 
-    ## while loop to minimize step
+    # while loop to minimize step
     while (maxstep > cutoff & count < maxiter) {
         
         maxstep <- max(abs(del_theta(X, theta)))
