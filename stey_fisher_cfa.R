@@ -203,11 +203,7 @@ phi_dot <- matrix(c(0, 1, 1, 0), nrow = 2, ncol = 2)
 
 
 
-
-
-###
-# function to fill f_dot vector
-###
+# The dx() function fills the f_dot vector
 dx <- function(X, sigma, sigma_dot) {
     
     J <- (2 * nrow(sigma))+ 1
@@ -262,29 +258,29 @@ del_theta <- function(X, start){
     J <- length(theta)
     K <- J
     
-    ## define lam
+    # define lam
     lam <- matrix(c(theta[1], theta[2], 0, 0, 0, 0, 0, theta[3], theta[4], theta[5]), nrow = 5, ncol = 2)
     
-    ## define psi from theta values
+    # define psi from theta values
     psi <- matrix(c(theta[7], 0, 0, 0, 0, 0, theta[8], 0, 0, 0, 0, 0, theta[9], 0, 0, 0, 0, 0, theta[10], 0, 0, 0, 0, 0, theta[11]), nrow = 5, ncol = 5)
 
-    ## define Phi from theta values
+    # define Phi from theta values
     Phi <- matrix(c(1, theta[6], theta[6], 1), nrow = 2, ncol = 2)
 
-    ## Compute model-implied covariance matrix
+    # Compute model-implied covariance matrix
     sigma <- lam %*% Phi %*% t(lam) + psi
     
-    ## loop to fill sigma_dot for j = 1, 2, 3, 4, 5
+    # loop to fill sigma_dot for j = 1, 2, 3, 4, 5
     for (j in 1:5) {
         sigma_dot[, , j] <- lam_dot[, , j] %*% Phi %*% t(lam) + lam %*% Phi %*% t(lam_dot[, , j])
     }
 
 
-    ## Compute sigma_dot for j = 6
+    # Compute sigma_dot for j = 6
     sigma_dot[, , 6] <- lam %*% phi_dot %*% t(lam)
 
 
-    ## Loop to fill sigma_dot for j = 7, 8, 9, 10, 11
+    # Loop to fill sigma_dot for j = 7, 8, 9, 10, 11
     for (j in 7:11) {
         sigma_dot[, , j] <- e[, , j-6] %*% t(e[, , j-6])
     }
@@ -297,15 +293,8 @@ del_theta <- function(X, start){
 }
 
 
-
-
-
-
-
-###
-# Function that will iterate until sufficiently small step size
-###
-
+# The scoring() function will iterate until 
+# sufficiently small step size
 scoring <- function(X, start, cutoff, maxiter){
     
     theta <- start
