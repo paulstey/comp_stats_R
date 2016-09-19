@@ -8,22 +8,18 @@
 dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
 
 
-#########
 # One-factor model 
 # Using last 3 variables
-#########
 
 X <- dset[, 3:5]
 
-## initialize arrays to be filled
+# initialize arrays to be filled
 f_dot <- rep(NA, length = 6)
 sigma_dot <- array(NA, dim = c(3, 3, 6))
 f_2dot <- matrix(NA, nrow = 6, ncol = 6)
 
 
-###
 # function to fill f_dot vector (first derivatives)
-###
 dx <- function(X, sigma, sigma_dot) {
     J <- 2*nrow(sigma)
     S <- cov(X)
@@ -39,9 +35,8 @@ dx <- function(X, sigma, sigma_dot) {
 }
 
 
-###
+
 # function to fill f_2dot matrix (second derivates)
-###
 d2x <- function(X, sigma, sigma_dot) {
     
     J <- 2*nrow(sigma)
@@ -62,9 +57,8 @@ d2x <- function(X, sigma, sigma_dot) {
 
 
 
-###
+
 # Function to return delta theta, which is our step size
-###
 del_theta <- function(X, start) {
     
     theta <- start
@@ -78,7 +72,7 @@ del_theta <- function(X, start) {
     # define psi from theta values
     psi <- matrix(c(theta[4], 0, 0, 0, theta[5], 0, 0, 0, theta[6]), nrow = 3, ncol = 3)
 
-    ## Compute model-implied covariance matrix
+    # Compute model-implied covariance matrix
     sigma <- lam %*% t(lam) + psi
 
 
@@ -105,10 +99,7 @@ del_theta <- function(X, start) {
 }
 
 
-###
 # Function that will iterate until sufficiently small step size
-###
-
 scoring <- function(X, start, cutoff, maxiter) {
     
     theta <- start
@@ -129,17 +120,15 @@ scoring <- function(X, start, cutoff, maxiter) {
 }
 
 
-###
+
 # set our start values and run the function
-###
 theta0 <- c(1, 1, 1, 1, 1, 1)
 
 score_cfa <- scoring(X, start = theta0, cutoff = 1e-5, maxiter = 100)
 
 
-###
+
 # clean up and print result
-###
 score_cfa <- round(score_cfa, digits = 2)
 
 print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', ', 'and ', score_cfa[3], '.  ', 'The unique variances are: ', score_cfa[4], ', ', score_cfa[5], ', ', 'and ', score_cfa[6], '.'))
@@ -148,9 +137,7 @@ print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', '
 
 
 
-###
 # Check results against lavaan
-###
 library(lavaan)
 
 mod1 <- '
@@ -170,17 +157,17 @@ summary(fm1)
 ##########
 
 
-## read complete data set into X matrix
+# read complete data set into X matrix
 X <- dset
 
 
 
-## initialize arrays to be filled
+# initialize arrays to be filled
 f_dot <- rep(NA, length = 11)
 sigma_dot <- array(NA, dim = c(5, 5, 11))
 f_2dot <- matrix(NA, nrow = 11, ncol = 11)
 
-## define first derivative of lam
+# define first derivative of lam
 lam_dot <- array(0, dim = c(5, 2, 5))
 lam_dot[1, 1, 1] <- 1
 lam_dot[2, 1, 2] <- 1
