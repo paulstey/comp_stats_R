@@ -75,7 +75,6 @@ del_theta <- function(X, start) {
     # Compute model-implied covariance matrix
     sigma <- lam %*% t(lam) + psi
 
-
     # loop to fill sigma_dot for j = 1, 2, 3
     for (i in 1:3) {
         sigma_dot[, , i] <- e[, , i] %*% t(lam) + lam %*% t(e[, , i])
@@ -92,7 +91,7 @@ del_theta <- function(X, start) {
     # Apply function for second derivative of F
     f_2dot <- d2x(X, sigma, sigma_dot)
 
-    ## compute step size 
+    # compute step size 
     delta_theta <- solve(f_2dot) %*% f_dot
 
     return(delta_theta)
@@ -107,19 +106,15 @@ scoring <- function(X, start, cutoff, maxiter) {
     maxstep <- 1e5
 
     # while loop to minimize step
-    while (maxstep > cutoff & count < maxiter) {
-        
+    while (maxstep > cutoff & count < maxiter) {        
         maxstep <- max(abs(del_theta(X, theta)))
         theta <- theta - del_theta(X, theta)
 
         print(paste(count, maxstep))
-        
         count <- count + 1
     }
     return(theta)
 }
-
-
 
 # set our start values and run the function
 theta0 <- c(1, 1, 1, 1, 1, 1)
@@ -127,13 +122,10 @@ theta0 <- c(1, 1, 1, 1, 1, 1)
 score_cfa <- scoring(X, start = theta0, cutoff = 1e-5, maxiter = 100)
 
 
-
 # clean up and print result
 score_cfa <- round(score_cfa, digits = 2)
 
 print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', ', 'and ', score_cfa[3], '.  ', 'The unique variances are: ', score_cfa[4], ', ', score_cfa[5], ', ', 'and ', score_cfa[6], '.'))
-
-
 
 
 
