@@ -4,6 +4,9 @@
 # Author: Paul Stey
 ####
 
+
+library(lavaan)
+
 ## Read in Mardia, Kent, and Bibby (1979) "Open-Closed Book" data
 dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
 
@@ -319,8 +322,6 @@ print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', '
 ###
 # Check results against lavaan
 ###
-
-library(lavaan)
 
 mod1 <- '
 f1 =~ V1 + V2
