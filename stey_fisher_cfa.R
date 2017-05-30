@@ -41,7 +41,6 @@ dx <- function(X, sigma, sigma_dot) {
 
 # function to fill f_2dot matrix (second derivates)
 d2x <- function(X, sigma, sigma_dot) {
-    
     J <- 2*nrow(sigma)
     K <- J
 
@@ -62,8 +61,7 @@ d2x <- function(X, sigma, sigma_dot) {
 
 
 # Function to return delta theta, which is our step size
-del_theta <- function(X, start) {
-    
+del_theta <- function(X, start) { 
     theta <- start
     J <- length(theta)
     K <- J
@@ -102,8 +100,7 @@ del_theta <- function(X, start) {
 
 
 # Function that will iterate until sufficiently small step size
-scoring <- function(X, start, cutoff, maxiter) {
-    
+scoring <- function(X, start, cutoff, maxiter) {  
     theta <- start
     count <- 1
     maxstep <- 1e5
@@ -187,7 +184,6 @@ phi_dot <- matrix(c(0, 1, 1, 0), nrow = 2, ncol = 2)
 
 # The dx() function fills the f_dot vector
 dx <- function(X, sigma, sigma_dot) {
-    
     J <- (2 * nrow(sigma))+ 1
     S <- cov(X)
 
@@ -208,8 +204,7 @@ dx <- function(X, sigma, sigma_dot) {
 ###
 # function to fill f_2dot matrix
 ###
-d2x <- function(X, sigma, sigma_dot){
-    
+d2x <- function(X, sigma, sigma_dot) {
     J <- (2 * nrow(sigma)) + 1
     K <- J
 
@@ -234,8 +229,7 @@ d2x <- function(X, sigma, sigma_dot){
 ###
 # Function to return delta theta, which is our step size
 ###
-del_theta <- function(X, start){
-    
+del_theta <- function(X, start) {
     theta <- start
     J <- length(theta)
     K <- J
@@ -277,7 +271,7 @@ del_theta <- function(X, start){
 
 # The scoring() function will iterate until 
 # sufficiently small step size
-scoring <- function(X, start, cutoff, maxiter){
+scoring <- function(X, start, cutoff, maxiter) {
     
     theta <- start
     count <- 1
