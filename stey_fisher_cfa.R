@@ -148,7 +148,6 @@ summary(fm1)
 # Using all five variables
 ##########
 
-
 # read complete data set into X matrix
 X <- dset
 
@@ -199,8 +198,6 @@ dx <- function(X, sigma, sigma_dot) {
 
 
 
-
-
 ###
 # function to fill f_2dot matrix
 ###
@@ -219,9 +216,6 @@ d2x <- function(X, sigma, sigma_dot) {
     }
     return(f_2dot)
 }
-
-
-
 
 
 
