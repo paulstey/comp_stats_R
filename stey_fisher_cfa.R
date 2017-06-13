@@ -38,7 +38,6 @@ dx <- function(X, sigma, sigma_dot) {
 }
 
 
-
 # function to fill f_2dot matrix (second derivates)
 d2x <- function(X, sigma, sigma_dot) {
     J <- 2*nrow(sigma)
@@ -55,8 +54,6 @@ d2x <- function(X, sigma, sigma_dot) {
     }
     return(f_2dot)
 }
-
-
 
 
 
@@ -138,8 +135,6 @@ f1 =~ V3 + V4 + V5
 
 fm1 <- cfa(mod1, data = X, std.lv = TRUE)
 summary(fm1)
-
-
 
 
 
