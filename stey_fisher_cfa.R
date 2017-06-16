@@ -4,8 +4,7 @@
 # Author: Paul Stey
 ####
 
-
-library(lavaan)
+library(lavaan)         # for validation
 
 ## Read in Mardia, Kent, and Bibby (1979) "Open-Closed Book" data
 dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
