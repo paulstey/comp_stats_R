@@ -129,7 +129,7 @@ print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', '
 library(lavaan)
 
 mod1 <- '
-f1 =~ V3 + V4 + V5
+    f1 =~ V3 + V4 + V5
 '
 
 fm1 <- cfa(mod1, data = X, std.lv = TRUE)
@@ -306,8 +306,8 @@ print(paste0('The factor loadings are: ', score_cfa[1], ', ', score_cfa[2], ', '
 ###
 
 mod1 <- '
-f1 =~ V1 + V2
-f2 =~ V3 + V4 + V5
+    f1 =~ V1 + V2
+    f2 =~ V3 + V4 + V5
 '
 
 fm1 <- cfa(mod1, data = X, std.lv = TRUE)
