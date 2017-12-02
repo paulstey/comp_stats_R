@@ -7,7 +7,7 @@
 library(lavaan)         # for validation
 
 ## Read in Mardia, Kent, and Bibby (1979) "Open-Closed Book" data
-dset <- read.table('http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat', header = FALSE, nrows = 88)
+dset <- read.table("http://www3.nd.edu/~kyuan/courses/CS/data/mardia.dat", header = FALSE, nrows = 88)
 
 
 # One-factor model 
@@ -99,7 +99,7 @@ del_theta <- function(X, start) {
 scoring <- function(X, start, cutoff, maxiter) {  
     theta <- start
     count <- 1
-    maxstep <- 1e5
+    maxstep <- 1.0e5
 
     # while loop to minimize step
     while (maxstep > cutoff & count < maxiter) {        
